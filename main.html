@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Go on a Date With Me?</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fce4ec;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        h1 {
+            color: #e91e63;
+            margin-bottom: 30px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+            border-radius: 10px;
+            background-color: #e91e63;
+        }
+        .btn.no {
+            background-color: #f06292;
+        }
+        #hoverMessage {
+            margin-top: 20px;
+            color: #d81b60;
+            font-weight: bold;
+        }
+        #dateMessage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #e91e63;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="questionContainer">
+        <h1>Date pe chalogi ? 🫣</h1>
+        <div class="buttons">
+            <button class="btn yes" onclick="sayYes()">Yes</button>
+            <button class="btn no" onmouseover="moveButton()" id="noButton">No</button>
+        </div>
+        <div id="hoverMessage"></div>
+    </div>
+    <div id="dateMessage">It's a date!😇 Kab chalna hai ?</div>
+
+    <script>
+        let hoverCount = 0;
+
+        function moveButton() {
+            hoverCount++;
+            const button = document.getElementById('noButton');
+            const x = Math.floor(Math.random() * (window.innerWidth - button.clientWidth));
+            const y = Math.floor(Math.random() * (window.innerHeight - button.clientHeight));
+            button.style.position = 'absolute';
+            button.style.left = `${x}px`;
+            button.style.top = `${y}px`;
+
+            // Update the hover message with repeated "Please..."
+            document.getElementById('hoverMessage').textContent = 'Please...🥺 '.repeat(hoverCount);
+        }
+
+        function sayYes() {
+            // Hide the question and buttons
+            document.getElementById('questionContainer').style.display = 'none';
+            
+            // Show the date message container
+            document.getElementById('dateMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
