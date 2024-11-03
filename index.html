@@ -2,23 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Go on a Date With Me?</title>
     <style>
         body {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #fce4ec;
+            background-color: #ffcccb; /* Light pink background color */
             font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+        #container {
+            position: relative;
+            width: 80%; /* Set the width of the container */
+            height: 80%; /* Set the height of the container */
+            background: url('https://static.vecteezy.com/system/resources/previews/047/489/621/non_2x/a-cartoon-panda-bear-sitting-on-its-hands-free-vector.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px; /* Optional: adds rounded corners to the container */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Optional: adds shadow to the container */
         }
         h1 {
             color: #e91e63;
             margin-bottom: 30px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            font-size: 48px; /* Increased font size */
+            font-weight: bold; /* Bold text */
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        .heart {
+            position: absolute;
+            width: 30px; /* Increased heart size */
+            height: 30px; /* Increased heart size */
+            background-color: #e91e63;
+            clip-path: polygon(50% 0%, 61% 15%, 75% 15%, 100% 35%, 100% 65%, 50% 100%, 0% 65%, 0% 35%, 25% 15%, 39% 15%);
+            animation: heartFloat 4s linear infinite;
         }
         .buttons {
             display: flex;
@@ -28,18 +66,24 @@
             padding: 10px 20px;
             border: none;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 24px; /* Increased button font size */
             color: white;
             border-radius: 10px;
             background-color: #e91e63;
+            transition: transform 0.2s;
+            animation: heartBeat 1.5s infinite;
         }
         .btn.no {
             background-color: #f06292;
+        }
+        .btn:hover {
+            transform: scale(1.1);
         }
         #hoverMessage {
             margin-top: 20px;
             color: #d81b60;
             font-weight: bold;
+            font-size: 24px; /* Increased hover message font size */
         }
         #dateMessage {
             display: none;
@@ -53,19 +97,31 @@
             border-radius: 15px;
             font-size: 24px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        #dateMessage img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="questionContainer">
-        <h1>Date pe chalogi ? 🫣</h1>
-        <div class="buttons">
-            <button class="btn yes" onclick="sayYes()">Yes</button>
-            <button class="btn no" onmouseover="moveButton()" id="noButton">No</button>
+    <div id="container">
+        <div id="questionContainer">
+            <h1>💖 Date pe chalogi? 😅 💖</h1>
+            <div class="buttons">
+                <button class="btn yes" onclick="sayYes()">Yes</button>
+                <button class="btn no" onmouseover="moveButton()" id="noButton">No</button>
+            </div>
+            <div id="hoverMessage"></div>
         </div>
-        <div id="hoverMessage"></div>
+        <div id="dateMessage">
+            <p>It's a date!😇 Kab chalna hai ?</p>
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/midnight-romantic-date-illustration-download-in-svg-png-gif-file-formats--night-lover-affection-happy-couple-hug-activity-pack-people-illustrations-3207600.png" alt="Romantic Animation">
+        </div>
     </div>
-    <div id="dateMessage">It's a date!😇 Kab chalna hai ?</div>
 
     <script>
         let hoverCount = 0;
@@ -73,8 +129,9 @@
         function moveButton() {
             hoverCount++;
             const button = document.getElementById('noButton');
-            const x = Math.floor(Math.random() * (window.innerWidth - button.clientWidth));
-            const y = Math.floor(Math.random() * (window.innerHeight - button.clientHeight));
+            const container = document.getElementById('questionContainer');
+            const x = Math.random() * (container.clientWidth - button.clientWidth);
+            const y = Math.random() * (container.clientHeight - button.clientHeight);
             button.style.position = 'absolute';
             button.style.left = `${x}px`;
             button.style.top = `${y}px`;
@@ -89,7 +146,33 @@
             
             // Show the date message container
             document.getElementById('dateMessage').style.display = 'block';
+
+            // Create animated hearts
+            for (let i = 0; i < 20; i++) {
+                createHeart();
+            }
         }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            document.getElementById('container').appendChild(heart); // Append to container instead of questionContainer
+
+            // Randomly position the heart within the container
+            const container = document.getElementById('container');
+            const x = Math.random() * (container.clientWidth - 30); // Adjust for heart width
+            heart.style.left = `${x}px`;
+            heart.style.bottom = '0px';
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        // Create hearts floating around the container
+        setInterval(() => {
+            createHeart(); // Use the same function to create hearts
+        }, 500);
     </script>
 </body>
 </html>
